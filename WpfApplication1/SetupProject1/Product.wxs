@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define WpfApplication1_TargetDir=$(var.WpfApplication1.TargetDir)?>
+  <Product Id="6061FE35-6ADE-4905-B41A-DD3AB0C18F11" Name="My First XML Installer" Language="1033" Version="1.0.0.0" Manufacturer="Formenn Bulgaria LTD" UpgradeCode="f17212c5-a1a0-4e71-b6ee-301a82b4e6de">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <Icon Id="xaddbanner_blue_ico.ico" SourceFile="$(var.ProjectDir)xaddbanner_blue_ico.ico" />
+    <Property Id="ARPPRODUCTICON" Value="xaddbanner_blue_ico.ico" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="Images\InstallerTopBanner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="Images\InstallerBackground.bmp" />
+
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\License.rtf" />
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="My First XML Installer" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+      <ComponentGroupRef Id="Files_files" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="My First XML Installer">
+          <Directory Id="Files" Name="Files" />
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="MyWpfApplication" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+      <Component Id="WpfApplication1.exe" Guid="e682c031-4f1c-4c19-98fe-7d5800679797">
+        <File Id="WpfApplication1.exe" Name="WpfApplication1.exe" Source="$(var.WpfApplication1_TargetDir)WpfApplication1.exe" />
+      </Component>
+      <Component Id="WpfApplication1.exe.config" Guid="ccdebf3d-843b-4321-86c8-520f606c97a2">
+        <File Id="WpfApplication1.exe.config" Name="WpfApplication1.exe.config" Source="$(var.WpfApplication1_TargetDir)WpfApplication1.exe.config" />
+      </Component>
+      <Component Id="WpfAppDependency.dll" Guid="9427f8ff-1144-4f78-8b49-2dac8295dd97">
+        <File Id="WpfAppDependency.dll" Name="WpfAppDependency.dll" Source="$(var.WpfApplication1_TargetDir)WpfAppDependency.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="MyWpfApplication" Description="MyWpfApplication" Target="[INSTALLFOLDER]WpfApplication1.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\MyWpfApplication" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="MyWpfApplication" Description="MyWpfApplication" Target="[INSTALLFOLDER]WpfApplication1.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\MyWpfApplication" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+  <Fragment>
+    <ComponentGroup Id="Files_files" Directory="Files">
+      <Component Id="Files_TextFile1.txt" Guid="278279fe-11cf-4b10-8210-915a8fee48ce">
+        <File Id="Files_TextFile1.txt" Name="TextFile1.txt" Source="$(var.WpfApplication1_TargetDir)Files\TextFile1.txt" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
