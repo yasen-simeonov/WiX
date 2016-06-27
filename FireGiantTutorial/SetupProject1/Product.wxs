@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define FireGiantTutorial_TargetDir=$(var.FireGiantTutorial.TargetDir)?>
-  <Product Id="1C3F768E-6263-41A2-8419-3E69937703D0" Name="Fire Giant Tutorial" Language="1033" Version="1.0.0" Manufacturer="Yasen" UpgradeCode="15e0f918-d4d4-4479-a351-9f1a0cad149f">
+  <Product Id="1C3F768E-6263-41A2-8419-3E69937703D0" Name="Fire Giant Tutorial" Language="1033" Version="1.0.0" Manufacturer="Yasen" UpgradeCode="15e0f918-d4d4-4479-a351-9f1a0cad149f">  
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-
+    
+     <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)xaddbanner_blue_ico.ico" />
+     <Property Id="ARPPRODUCTICON" Value="xaddbanner_blue_ico.ico" />
+  
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
@@ -20,12 +23,7 @@
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder" Name="Programs">
-        <Directory Id="ProgramMenuDir" Name="Fire Giant Tutorials">
-          <Component Id="ProgramMenuDir" Guid="A02B2E3D-6199-4FCB-A07C-06184D49F36A">
-            <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
-            <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
-          </Component>
-        </Directory>
+        <Directory Id="ProgramMenuDir" Name="Fire Giant Tutorials" />
       </Directory>
       <Directory Id="DesktopFolder" Name="Desktop" />
     </Directory>
@@ -41,4 +39,22 @@
       </Component>
     </ComponentGroup>
   </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ProgramMenuDir">
+      <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="FireGiantTutorial1" Description="FireGiantTutorial1" Target="[INSTALLFOLDER]FireGiantTutorial.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveProgramMenuDir" Directory="ProgramMenuDir" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\FireGiantTutorial1" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="FireGiantTutorial1" Description="FireGiantTutorial1" Target="[INSTALLFOLDER]FireGiantTutorial.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\FireGiantTutorial1" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
 </Wix>

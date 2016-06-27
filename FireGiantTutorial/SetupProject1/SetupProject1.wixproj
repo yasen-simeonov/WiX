@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SetupProject1.wax" />
+    <Content Include="xaddbanner_blue_ico.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FireGiantTutorial\FireGiantTutorial.csproj">
