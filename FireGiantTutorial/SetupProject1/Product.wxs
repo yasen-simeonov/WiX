@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define FireGiantTutorial_TargetDir=$(var.FireGiantTutorial.TargetDir)?>
+  <Product Id="1C3F768E-6263-41A2-8419-3E69937703D0" Name="Fire Giant Tutorial" Language="1033" Version="1.0.0" Manufacturer="Yasen" UpgradeCode="15e0f918-d4d4-4479-a351-9f1a0cad149f">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="Fire Giant Tutorial" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="FireGiantMain" Name="Fire Giant Main">
+          <Directory Id="INSTALLFOLDER" Name="Fire Giant Tutorial 1.0" />
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="Fire Giant Tutorials">
+          <Component Id="ProgramMenuDir" Guid="A02B2E3D-6199-4FCB-A07C-06184D49F36A">
+            <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+            <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="FireGiantTutorial.exe" Guid="23ff3ebc-2b09-45c0-910f-5ac53da61b28">
+        <File Id="FireGiantTutorial.exe" Vital="yes" Name="FireGiantTutorial.exe" Source="$(var.FireGiantTutorial_TargetDir)FireGiantTutorial.exe" KeyPath="yes" />
+      </Component>
+      <Component Id="FireGiantTutorial.exe.config" Guid="55639214-22ab-4db0-8b89-780ef2070cfc">
+        <File Id="FireGiantTutorial.exe.config" Name="FireGiantTutorial.exe.config" Source="$(var.FireGiantTutorial_TargetDir)FireGiantTutorial.exe.config" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
