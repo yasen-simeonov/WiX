@@ -9,6 +9,14 @@
 
     <Icon Id="Icon.ico" SourceFile="$(var.ProjectDir)Icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="Icon.ico" />
+    
+    <Property Id="INSTALLFOLDER">
+      <IniFileSearch Id='AcmeFoobarIniFile' Type='directory' Name='SampleRegistry.ini' Section='Sample' Key='InstallDir' Field='1' />
+    </Property>
+
+    <Condition Message='This application only runs on Windows 7.'>
+      VersionNT = 601
+    </Condition>
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
