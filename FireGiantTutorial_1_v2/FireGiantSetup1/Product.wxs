@@ -5,32 +5,53 @@
 
   <Product Id="F849796D-A2D0-4304-BAD7-BFBEE919AAE5" Name="FireGiantSetup1" Language="1033" Version="1.0.0.0" Manufacturer="Yasen" UpgradeCode="889f447a-287a-48e9-9a69-dacd199931c8">
 
-    <Package Id="D15446C6-B1B2-437C-97B9-30B10DF98BC3" Keywords="Installer" Description="Yasen Installer for Tutorial 1" Comments="Foobar is a registered trademark of Acme Ltd." Manufacturer="Yasen" InstallerVersion="200" Compressed="yes" Languages="1033" InstallScope="perMachine" />
+    <Package Id="D15446C6-B1B2-437C-97B9-30B10DF98BC3" Keywords="Installer" Description="Yasen Installer for Tutorial 1" 
+             Comments="Foobar is a registered trademark of Acme Ltd." Manufacturer="Yasen" InstallerVersion="200" Compressed="yes" Languages="1033" 
+             InstallScope="perMachine" Platform="x64"/>
 
     <Icon Id="Icon.ico" SourceFile="$(var.ProjectDir)Icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="Icon.ico" />
     
-    <Property Id="INSTALLFOLDER">
-      <IniFileSearch Id='AcmeFoobarIniFile' Type='directory' Name='SampleRegistry.ini' Section='Sample' Key='InstallDir' Field='1' />
-    </Property>
-
-    <Condition Message='This application only runs on Windows 7.'>
-      VersionNT = 601
-    </Condition>
-
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
-    <Feature Id="Complete" Title="Fire Giant Setup 1" Level="1">
-      <ComponentGroupRef Id="MainExecutable" />
-      <ComponentRef Id="FireGiantProgramMenuComponent" />
-      <ComponentRef Id="FireGiantDesktopComponent"/>
+    <Property Id="INSTALLFOLDER">
+      <RegistrySearch Id='AcmeFoobarRegistry' Type='raw' Root='HKLM' Key='Software\Acme\Foobar 1.0' Name='InstallDir' Win64='yes'/>
+    </Property>
+
+    <Property Id="FILEEXISTS">
+      <DirectorySearch Id="CheckFileDir" Path="[INSTALLFOLDER]" Depth="0">
+        <FileSearch Id="CheckFile" Name="Lookfor.txt"/>
+      </DirectorySearch>
+    </Property>
+
+    <!--<Property Id="INSTALLFOLDER">
+      <IniFileSearch Id='AcmeFoobarIniFile' Type='directory' Name='SampleRegistry.ini' Section='Sample' Key='InstallDir' Field='1' />
+    </Property>-->
+
+    <!--<Condition Message='This application only runs on Windows 7.'>
+      VersionNT = 601
+    </Condition>-->
+
+    <Feature Id="Complete" Title="Complete Setup" Level="1">
+      <Feature Id="MainProgram" Level="1">
+        <ComponentGroupRef Id="MainExecutable" />
+        <ComponentRef Id="ExeProgramMenuComponent" />
+        <ComponentRef Id="FireGiantDesktopComponent"/>
+      </Feature>
+      <Feature Id="Documentation" Level="1">
+        <ComponentGroupRef Id="DocumentationComponentGroup"/>
+        <ComponentRef Id="ManualProgramMenuComponent"/>
+        <Condition Level="0">NOT FILEEXISTS</Condition>
+      </Feature>     
     </Feature>
+    
+    
   </Product>
 
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
+      <Directory Id="ProgramFiles64Folder">
         <Directory Id="INSTALLFOLDER" Name="FireGiantSetup1" />
       </Directory>
       <Directory Id="ProgramMenuFolder" Name="Programs">
@@ -42,16 +63,30 @@
 
   <Fragment>
     <ComponentGroup Id="MainExecutable" Directory="INSTALLFOLDER">
-      <Component Id="FireGiantTutorial_1_v2.exe" Guid="a737afa5-f8f1-4946-9d73-e4789eb6b334">
+      <Component Id="FireGiantTutorial_1_v2.exe" Guid="a737afa5-f8f1-4946-9d73-e4789eb6b334" Win64="yes">
         <File Id="FireGiantTutorial_1_v2.exe" Name="FireGiantTutorial_1_v2.exe" Source="$(var.FireGiantTutorial_1_v2_TargetDir)FireGiantTutorial_1_v2.exe" />
       </Component>
-      <Component Id="FireGiantTutorial_1_v2.exe.config" Guid="8007b5a8-b6db-4085-95cd-44adf62887ec">
+      <Component Id="FireGiantTutorial_1_v2.exe.config" Guid="8007b5a8-b6db-4085-95cd-44adf62887ec" Win64="yes">
         <File Id="FireGiantTutorial_1_v2.exe.config" Name="FireGiantTutorial_1_v2.exe.config" Source="$(var.FireGiantTutorial_1_v2_TargetDir)FireGiantTutorial_1_v2.exe.config" />
       </Component>
-      <Component Id="Helper.dll" Guid="1d273b5e-2605-4c1f-aef7-460249a0423f">
+      <Component Id="Helper.dll" Guid="1d273b5e-2605-4c1f-aef7-460249a0423f" Win64="yes">
         <File Id="Helper.dll" Name="Helper.dll" Source="$(var.FireGiantTutorial_1_v2_TargetDir)Helper.dll" />
       </Component>
-      <Component Id="Manual.pdf" Guid="c4f427a5-90a8-4faa-8807-a416fbe34bee">
+      <Component Id="CreateRegistryComponent" Guid="084F5E13-87B6-45DE-AD5C-4C39BA1ABB24" Win64="yes">
+        <Condition> VersionNT64 </Condition>
+        <RegistryKey Id="RegInstallDir" Root="HKLM" Key="Software\FireGiant\Tutorial" Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Name="InstallDirString" Value="[INSTALLFOLDER]"/>
+          <RegistryValue Type="integer" Name="FlagInt" Value="0"/>
+          <RegistryValue Type="multiString" Name="InstallDirMultistring" Action="append">
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[TARGETDIR]</MultiStringValue>           
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[INSTALLFOLDER]</MultiStringValue>
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[ProgramFiles64Folder]</MultiStringValue>
+          </RegistryValue>
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="DocumentationComponentGroup" Directory="INSTALLFOLDER">
+      <Component Id="Manual.pdf" Guid="c4f427a5-90a8-4faa-8807-a416fbe34bee" Win64="yes">
         <File Id="Manual.pdf" Name="Manual.pdf" Source="$(var.FireGiantTutorial_1_v2_TargetDir)Manual.pdf" />
       </Component>
     </ComponentGroup>
@@ -59,12 +94,15 @@
 
   <Fragment>
     <DirectoryRef Id="FireGiantProgramMenuFolder">
-      <Component Id="FireGiantProgramMenuComponent" Guid="14BBE39F-DFA7-41D9-B7B9-8E95D137579C">
+      <Component Id="ExeProgramMenuComponent" Guid="14BBE39F-DFA7-41D9-B7B9-8E95D137579C">
         <Shortcut Id="ExeProgramMenuShortcut" Name="Fire Giant Tutorial 1.0" Description="Bla Bla" Target="[INSTALLFOLDER]FireGiantTutorial_1_v2.exe" 
           WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveFireGiantProgramMenuFolder" Directory="FireGiantProgramMenuFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Fire Giant Tutorial 1.0" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+      <Component Id="ManualProgramMenuComponent" Guid="386F0A6C-E065-40DE-9E1F-EB2DF7E445C3">
         <Shortcut Id="ManualProgramMenuShortcut" Name="User Guide" Description="Bla bla user guide" Target="[INSTALLFOLDER]Manual.pdf"
           WorkingDirectory="INSTALLFOLDER" />
-        <RemoveFolder Id="RemoveFireGiantProgramMenuFolder" Directory="FireGiantProgramMenuFolder" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\Fire Giant Tutorial 1.0" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
