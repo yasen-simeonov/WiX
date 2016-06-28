@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireGiantTutorial_1_v2", "F
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "FireGiantSetup1", "FireGiantSetup1\FireGiantSetup1.wixproj", "{E5C06689-BBFB-481E-8D20-B6695B0DACCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{33C48FB5-A14B-4900-85E3-45BF354EEA0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,16 @@ Global
 		{E5C06689-BBFB-481E-8D20-B6695B0DACCB}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E5C06689-BBFB-481E-8D20-B6695B0DACCB}.Release|x86.ActiveCfg = Release|x86
 		{E5C06689-BBFB-481E-8D20-B6695B0DACCB}.Release|x86.Build.0 = Release|x86
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{33C48FB5-A14B-4900-85E3-45BF354EEA0D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

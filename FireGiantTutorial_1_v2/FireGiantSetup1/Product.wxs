@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?define FireGiantTutorial_1_v2_TargetDir=$(var.FireGiantTutorial_1_v2.TargetDir)?>
+
+  <Product Id="F849796D-A2D0-4304-BAD7-BFBEE919AAE5" Name="FireGiantSetup1" Language="1033" Version="1.0.0.0" Manufacturer="Yasen" UpgradeCode="889f447a-287a-48e9-9a69-dacd199931c8">
+
+    <Package Id="D15446C6-B1B2-437C-97B9-30B10DF98BC3" Keywords="Installer" Description="Yasen Installer for Tutorial 1" Comments="Foobar is a registered trademark of Acme Ltd." Manufacturer="Yasen" InstallerVersion="200" Compressed="yes" Languages="1033" InstallScope="perMachine" />
+
+    <Icon Id="Icon.ico" SourceFile="$(var.ProjectDir)Icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="Icon.ico" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="Complete" Title="Fire Giant Setup 1" Level="1">
+      <ComponentGroupRef Id="MainExecutable" />
+      <ComponentRef Id="FireGiantProgramMenuComponent" />
+      <ComponentRef Id="FireGiantDesktopComponent"/>
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="FireGiantSetup1" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="FireGiantProgramMenuFolder" Name="Fire Giant Tutorial 1.0" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="MainExecutable" Directory="INSTALLFOLDER">
+      <Component Id="FireGiantTutorial_1_v2.exe" Guid="a737afa5-f8f1-4946-9d73-e4789eb6b334">
+        <File Id="FireGiantTutorial_1_v2.exe" Name="FireGiantTutorial_1_v2.exe" Source="$(var.FireGiantTutorial_1_v2_TargetDir)FireGiantTutorial_1_v2.exe" />
+      </Component>
+      <Component Id="FireGiantTutorial_1_v2.exe.config" Guid="8007b5a8-b6db-4085-95cd-44adf62887ec">
+        <File Id="FireGiantTutorial_1_v2.exe.config" Name="FireGiantTutorial_1_v2.exe.config" Source="$(var.FireGiantTutorial_1_v2_TargetDir)FireGiantTutorial_1_v2.exe.config" />
+      </Component>
+      <Component Id="Helper.dll" Guid="1d273b5e-2605-4c1f-aef7-460249a0423f">
+        <File Id="Helper.dll" Name="Helper.dll" Source="$(var.FireGiantTutorial_1_v2_TargetDir)Helper.dll" />
+      </Component>
+      <Component Id="Manual.pdf" Guid="c4f427a5-90a8-4faa-8807-a416fbe34bee">
+        <File Id="Manual.pdf" Name="Manual.pdf" Source="$(var.FireGiantTutorial_1_v2_TargetDir)Manual.pdf" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="FireGiantProgramMenuFolder">
+      <Component Id="FireGiantProgramMenuComponent" Guid="14BBE39F-DFA7-41D9-B7B9-8E95D137579C">
+        <Shortcut Id="ExeProgramMenuShortcut" Name="Fire Giant Tutorial 1.0" Description="Bla Bla" Target="[INSTALLFOLDER]FireGiantTutorial_1_v2.exe" 
+          WorkingDirectory="INSTALLFOLDER" />
+        <Shortcut Id="ManualProgramMenuShortcut" Name="User Guide" Description="Bla bla user guide" Target="[INSTALLFOLDER]Manual.pdf"
+          WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveFireGiantProgramMenuFolder" Directory="FireGiantProgramMenuFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Fire Giant Tutorial 1.0" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="FireGiantDesktopComponent" Guid="21FA374F-23B0-4EE4-AA38-C3A30F43282A">
+        <Shortcut Id="ExeDesktopShortcut" Name="Fire Giant Tutorial 1.0" Description="Desk shortcut" Target="[INSTALLFOLDER]FireGiantTutorial_1_v2.exe"
+           WorkingDirectory="INSTALLFOLDER"/>
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Fire Giant Tutorial 1.0" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+</Wix>
