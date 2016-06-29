@@ -7,6 +7,8 @@
     <Icon Id="Icon.ico" SourceFile="$(var.ProjectDir)Icon.ico"/>
     <Property Id="ARPPRODUCTICON" Value="Icon.ico"/>
 
+    <Property Id="INSTALLLEVEL" Value="800"/>
+
     <UIRef Id="WixUI_Mondo" />
     <UIRef Id="WixUI_ErrorProgressText" />
     
