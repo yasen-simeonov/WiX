@@ -3,7 +3,7 @@
 
   <?define FireGiantTutorial_1_v2_TargetDir=$(var.FireGiantTutorial_1_v2.TargetDir)?>
 
-  <Product Id="F849796D-A2D0-4304-BAD7-BFBEE919AAE5" Name="FireGiantSetup1" Language="1033" Version="1.0.0.0" Manufacturer="Yasen" UpgradeCode="889f447a-287a-48e9-9a69-dacd199931c8">
+  <Product Id="F849796D-A2D0-4304-BAD7-BFBEE919AAE5" Name="Fire Giant Setup" Language="1033" Version="1.0.0.0" Manufacturer="Yasen" UpgradeCode="889f447a-287a-48e9-9a69-dacd199931c8">
 
     <Package Id="D15446C6-B1B2-437C-97B9-30B10DF98BC3" Keywords="Installer" Description="Yasen Installer for Tutorial 1" 
              Comments="Foobar is a registered trademark of Acme Ltd." Manufacturer="Yasen" InstallerVersion="200" Compressed="yes" Languages="1033" 
@@ -16,7 +16,7 @@
     <MediaTemplate EmbedCab="yes" />
 
     <Property Id="INSTALLFOLDER">
-      <RegistrySearch Id='AcmeFoobarRegistry' Type='raw' Root='HKLM' Key='Software\Acme\Foobar 1.0' Name='InstallDir' Win64='yes'/>
+      <RegistrySearch Id='AcmeFoobarRegistry' Type='raw' Root='HKLM' Key='Software\Fire Giant 1.0' Name='InstallFolder' Win64='yes'/>
     </Property>
 
     <Property Id="FILEEXISTS">
@@ -74,7 +74,7 @@
       </Component>
       <Component Id="CreateRegistryComponent" Guid="084F5E13-87B6-45DE-AD5C-4C39BA1ABB24" Win64="yes">
         <Condition> VersionNT64 </Condition>
-        <RegistryKey Id="RegInstallDir" Root="HKLM" Key="Software\FireGiant\Tutorial" Action="createAndRemoveOnUninstall">
+        <RegistryKey Id="RegInstallDir" Root="HKLM" Key="Software\Fire Giant 1.0\Tutorial" Action="createAndRemoveOnUninstall">
           <RegistryValue Type="string" Name="InstallDirString" Value="[INSTALLFOLDER]"/>
           <RegistryValue Type="integer" Name="FlagInt" Value="0"/>
           <RegistryValue Type="multiString" Name="InstallDirMultistring" Action="append">
@@ -83,6 +83,10 @@
             <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[ProgramFiles64Folder]</MultiStringValue>
           </RegistryValue>
         </RegistryKey>
+        <IniFile Id="WriteIntoIniFile" Action="addLine" Key="InstallDir" Name="FireGiantINI.ini" Section="Paths" Value="[INSTALLFOLDER]"/>
+      </Component>
+      <Component Id="RemoveFileComponent" Guid="59642C91-52BF-4EA5-B67E-39D03481D3C4" Win64="yes">
+        <RemoveFile Id="LogFile" On="uninstall" Name="Logfile.log"/>
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="DocumentationComponentGroup" Directory="INSTALLFOLDER">
