@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define FireGiantTutorial_2_UI_TargetDir=$(var.FireGiantTutorial_2_UI.TargetDir)?>
+  <Product Id="9F2CB53C-EEDC-4B35-BCA9-DB735F8AAE96" Name="Fire Giant Tutorial 2.0" Language="1033" Version="1.0.0.0" Manufacturer="Yasen" UpgradeCode="fe83f416-0e48-4150-bed3-2259ebe4b2ff">
+    <Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <Icon Id="Icon.ico" SourceFile="$(var.ProjectDir)Icon.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="Icon.ico"/>
+
+    <UIRef Id="WixUI_Mondo" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+    
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="Complete" Title="Fire Giant Tutorial 2.0" Description="The complete package." Display="expand" Level="1" ConfigurableDirectory="INSTALLFOLDER">
+      <Feature Id ="MainProgram" Title="Program" Description="The main executable and DLL" Level="1">
+        <ComponentGroupRef Id="MainProgram" />
+        <ComponentRef Id="ExeProgramsMenuShortcut"/>
+        <ComponentRef Id="ExeDesktopShortcut"/>
+      </Feature>
+      <Feature Id="Documentation" Title="Manual" Description="The instruction manual." Level="1000">
+        <ComponentRef Id="ManualFile"/>
+        <ComponentRef Id="ManualProgramsMenuShortcut"/>
+      </Feature>
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id ="FireGiant" Name="Fire Giant">
+          <Directory Id="INSTALLFOLDER" Name="Tutorial 2.0" />
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="MyAppProgramMenuFolder" Name="Fire Giant Tutorial 2.0"/>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop"/>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="MainProgram" Directory="INSTALLFOLDER">
+      <Component Id="FireGiantTutorial_2_UI.exe" Guid="170ba590-2541-4b6b-bf45-769851efa99d">
+        <File Id="FireGiantTutorial_2_UI.exe" Name="FireGiantTutorial_2_UI.exe" Source="$(var.FireGiantTutorial_2_UI_TargetDir)FireGiantTutorial_2_UI.exe" />
+      </Component>
+      <Component Id="FireGiantTutorial_2_UI.exe.config" Guid="5585d99c-9d6e-424a-94a4-498341848b94">
+        <File Id="FireGiantTutorial_2_UI.exe.config" Name="FireGiantTutorial_2_UI.exe.config" Source="$(var.FireGiantTutorial_2_UI_TargetDir)FireGiantTutorial_2_UI.exe.config" />
+      </Component>
+      <Component Id="Helper.dll" Guid="a0649d2a-81eb-4923-a943-75c4b27a9cc4">
+        <File Id="Helper.dll" Name="Helper.dll" Source="$(var.FireGiantTutorial_2_UI_TargetDir)Helper.dll" />
+      </Component>
+    </ComponentGroup>
+
+    <Component Id="ExeProgramsMenuShortcut" Guid="FCB090E0-6263-41C9-A5F6-2B76E5F843A6" Directory="MyAppProgramMenuFolder">
+      <Shortcut Id="ExeProgramsMenuShortcut" Name="Fire Giant Tutorial 2.0" Description="Shortcut to EXE in Programs Menu" Target="[INSTALLFOLDER]FireGiantTutorial_2_UI.exe"
+                WorkingDirectory="INSTALLFOLDER"/>
+      <RemoveFolder Id="RemoveProgramsMenuFolder" On="uninstall"/>
+      <RegistryValue Root="HKCU" Key="SOFTWARE\[Manufacturer]\[ProductName]" Type="string" Value="yes" KeyPath="yes"/>
+    </Component>
+    <Component Id="ExeDesktopShortcut" Guid="5B7971CF-96B2-496E-96D9-F11C37C797D7" Directory="DesktopFolder">
+      <Shortcut Id="ExeDesktopShortcut" Name="Fire Giant Tutorial 2.0" Description="Shortcut to EXE on Desktop" Target="[INSTALLFOLDER]FireGiantTutorial_2_UI.exe"
+                WorkingDirectory="INSTALLFOLDER"/>
+      <RemoveFolder Id="RemoveDesktopFolder" On="uninstall"/>
+      <RegistryValue Root="HKCU" Key="SOFTWARE\[Manufacturer]\[ProductName]" Type="string" Value="yes" KeyPath="yes"/>
+    </Component>
+
+    <Component Id="ManualProgramsMenuShortcut" Guid="6E4551A3-338E-49FB-9EFD-2344642E3136" Directory="MyAppProgramMenuFolder">
+      <Shortcut Id="ManualProgramsMenuShortcut" Name="User Guide" Description="Shortcut to Manual in Programs Menu"
+                  Target="[INSTALLFOLDER]FBD-II-sem.pdf" WorkingDirectory="INSTALLFOLDER"/>
+      <RegistryValue Root="HKCU" Key="SOFTWARE\[Manufacturer]\[ProductName]" Type="string" Value="yes" KeyPath="yes"/>
+    </Component>
+    <Component Id="ManualFile" Guid="8360289e-6cfe-43c5-9bd3-d8a6473ad2ca" Directory="INSTALLFOLDER">
+      <File Id="FBD_II_sem.pdf" Name="FBD-II-sem.pdf" Source="$(var.FireGiantTutorial_2_UI_TargetDir)FBD-II-sem.pdf" />
+    </Component>
+  </Fragment>
+</Wix>
