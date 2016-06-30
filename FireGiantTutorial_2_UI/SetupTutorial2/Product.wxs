@@ -8,10 +8,18 @@
     <Property Id="ARPPRODUCTICON" Value="Icon.ico"/>
 
     <Property Id="INSTALLLEVEL" Value="800"/>
+    <Property Id="PIDTemplate"><![CDATA[12345<### ###>@@@@@]]></Property>
 
-    <UIRef Id="WixUI_Mondo" />
-    <UIRef Id="WixUI_ErrorProgressText" />
-    
+    <UI Id="MyCustomWixUI_Mondo">
+      <UIRef Id="WixUI_Mondo" />
+      <UIRef Id="WixUI_ErrorProgressText" />
+
+      <DialogRef Id="UserRegistrationDlg"/>
+
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="UserRegistrationDlg" Order="3">LicenseAccepted = "1"</Publish>
+      <Publish Dialog="SetupTypeDlg" Control="Back" Event="NewDialog" Value="UserRegistrationDlg">1</Publish>
+    </UI>
+
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
@@ -52,6 +60,21 @@
       </Component>
       <Component Id="Helper.dll" Guid="a0649d2a-81eb-4923-a943-75c4b27a9cc4">
         <File Id="Helper.dll" Name="Helper.dll" Source="$(var.FireGiantTutorial_2_UI_TargetDir)Helper.dll" />
+      </Component>
+      <Component Id="CreateRegistryComponent" Guid="993E3286-953E-4D27-BB18-B9B7B216E16A">
+        <RegistryKey Id="RegInstallDir" Root="HKLM" Key="Software\Fire Giant\Tutorial 2.0" Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Name="InstallDirString" Value="[INSTALLFOLDER]"/>
+          <RegistryValue Type="integer" Name="FlagInt" Value="0"/>
+          <RegistryValue Type="multiString" Name="InstallDirMultistring" Action="append">
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[TARGETDIR]</MultiStringValue>
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[INSTALLFOLDER]</MultiStringValue>
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[ProgramFilesFolder]</MultiStringValue>
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[USERNAME]</MultiStringValue>
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[COMPANYNAME]</MultiStringValue>
+            <MultiStringValue Type="multiString" Name="InstallDirMultistring" Action="append">[PIDKEY]</MultiStringValue>
+          </RegistryValue>
+        </RegistryKey>
+        <IniFile Id="WriteIntoIniFile" Action="addLine" Key="InstallDir" Name="FireGiantINI.ini" Section="Paths" Value="[INSTALLFOLDER]"/>
       </Component>
     </ComponentGroup>
 

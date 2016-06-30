@@ -22,6 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
+    <Compile Include="UserRegistrationDlg.wxs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
