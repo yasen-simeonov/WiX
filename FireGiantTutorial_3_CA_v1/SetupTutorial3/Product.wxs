@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define FireGiantTutorial_3_CA_v1_TargetDir=$(var.FireGiantTutorial_3_CA_v1.TargetDir)?>
+  <Product Id="8AF9DDFD-76F8-416B-A27A-B095B5CA3FFE" Name="Fire Giant Tutorial 3.1" Language="1033" Version="1.0.0.0" Manufacturer="Microsoft" UpgradeCode="425da7d9-019b-4166-9e6b-ae532aefc46e">
+    <Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="Fire Giant Tutorial 3.1" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+
+    <Binary Id="CustomActionBinary" SourceFile="$(var.CSharpCustomActionProject.TargetDir)$(var.CSharpCustomActionProject.TargetName).CA.dll" />
+
+    <CustomAction Id="CustomActionId" BinaryKey="CustomActionBinary" DllEntry="MyCustomActionMethod" Execute="deferred" HideTarget="yes" />
+
+    <InstallExecuteSequence>
+      <Custom Action="CustomActionId" Before="InstallFinalize" />
+    </InstallExecuteSequence>
+    
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Fire Giant Tutorial 3.1" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="Dummy.txt" Guid="e8378cbb-0cfc-4770-971c-c5da1f1fbd59">
+        <File Id="Dummy.txt" Name="Dummy.txt" Source="$(var.FireGiantTutorial_3_CA_v1_TargetDir)Dummy.txt" />
+      </Component>
+      <Component Id="FireGiantTutorial_3_CA_v1.exe" Guid="fc94c611-4517-4e4d-8366-86ab275963ce">
+        <File Id="FireGiantTutorial_3_CA_v1.exe" Name="FireGiantTutorial_3_CA_v1.exe" Source="$(var.FireGiantTutorial_3_CA_v1_TargetDir)FireGiantTutorial_3_CA_v1.exe" />
+      </Component>
+      <Component Id="FireGiantTutorial_3_CA_v1.exe.config" Guid="bc95f522-c9da-4abd-b012-05587851bfb3">
+        <File Id="FireGiantTutorial_3_CA_v1.exe.config" Name="FireGiantTutorial_3_CA_v1.exe.config" Source="$(var.FireGiantTutorial_3_CA_v1_TargetDir)FireGiantTutorial_3_CA_v1.exe.config" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
