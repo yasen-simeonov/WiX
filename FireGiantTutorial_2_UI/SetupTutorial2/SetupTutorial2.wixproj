@@ -44,6 +44,10 @@
       <Name>WixUIExtension</Name>
     </WixExtension>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserRegistrationDlg.bg-BG.wxl" />
+    <EmbeddedResource Include="UserRegistrationDlg.en-us.wxl" />
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

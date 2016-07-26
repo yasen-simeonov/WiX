@@ -18,6 +18,8 @@
 
       <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="UserRegistrationDlg" Order="3">LicenseAccepted = "1"</Publish>
       <Publish Dialog="SetupTypeDlg" Control="Back" Event="NewDialog" Value="UserRegistrationDlg">1</Publish>
+      <Property Id="WixUI_UserRegistrationDlgBack">LicenseAgreementDlg</Property>
+      <Property Id="WixUI_UserRegistrationDlgNext">SetupTypeDlg</Property>
     </UI>
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
