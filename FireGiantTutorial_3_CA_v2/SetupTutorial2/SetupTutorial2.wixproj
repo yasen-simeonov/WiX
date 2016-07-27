@@ -21,10 +21,12 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="InvalidPidDialog.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="UserRegistrationDlg.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Exclam.ico" />
     <Content Include="Icon.ico" />
     <Content Include="SetupTutorial2.wax" />
   </ItemGroup>

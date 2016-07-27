@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define FireGiantTutorial_2_UI_TargetDir=$(var.FireGiantTutorial_2_UI.TargetDir)?>
-  <Product Id="9F2CB53C-EEDC-4B35-BCA9-DB735F8AAE96" Name="Fire Giant Tutorial 2.0" Language="1033" Version="1.0.0.0" Manufacturer="Yasen" UpgradeCode="fe83f416-0e48-4150-bed3-2259ebe4b2ff">
+  <Product Id="1381431C-A74D-48E2-A26E-7B471A8CE36D" Name="Fire Giant Tutorial 3.2" Language="1033" Version="1.0.0.0" Manufacturer="Yasen" UpgradeCode="1DA44DA9-C1E9-42BE-A714-61C3B7B97AF6">
     <Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <Icon Id="Icon.ico" SourceFile="$(var.ProjectDir)Icon.ico"/>
+    <Binary Id="Exclam.ico" SourceFile="$(var.ProjectDir)Exclam.ico"/>
     <Property Id="ARPPRODUCTICON" Value="Icon.ico"/>
 
     <Property Id="INSTALLLEVEL" Value="800"/>
@@ -14,11 +15,11 @@
     <Binary Id="CustomActionBinary" SourceFile="$(var.ValidatePIDcustomAction.TargetDir)$(var.ValidatePIDcustomAction.TargetName).CA.dll" />
 
     <CustomAction Id="CheckPID" BinaryKey="CustomActionBinary" DllEntry="ValidateMethod" Execute="immediate" />
-    <CustomAction Id="RefusePID" Error="Invalid Key. Installation aborted!" />
+    <!--<CustomAction Id="RefusePID" Error="Invalid Key. Installation aborted!" />-->
 
     <InstallExecuteSequence>
-      <Custom Action="CheckPID" After="CostFinalize" />
-      <Custom Action="RefusePID" After="CheckPID">PIDACCEPTED="0" AND NOT Installed</Custom>
+      <!--<Custom Action="CheckPID" After="CostFinalize" />
+      <Custom Action="RefusePID" After="CheckPID">PIDACCEPTED="0" AND NOT Installed</Custom>-->
     </InstallExecuteSequence>
 
     <UI Id="MyCustomWixUI_Mondo">
@@ -26,6 +27,7 @@
       <UIRef Id="WixUI_ErrorProgressText" />
 
       <DialogRef Id="UserRegistrationDlg"/>
+      <DialogRef Id="InvalidPidDlg"/>
 
       <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="UserRegistrationDlg" Order="3">LicenseAccepted = "1"</Publish>
       <Publish Dialog="SetupTypeDlg" Control="Back" Event="NewDialog" Value="UserRegistrationDlg">1</Publish>
@@ -36,7 +38,7 @@
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
-    <Feature Id="Complete" Title="Fire Giant Tutorial 2.0" Description="The complete package." Display="expand" Level="1" ConfigurableDirectory="INSTALLFOLDER">
+    <Feature Id="Complete" Title="Fire Giant Tutorial 3.2" Description="The complete package." Display="expand" Level="1" ConfigurableDirectory="INSTALLFOLDER">
       <Feature Id ="MainProgram" Title="Program" Description="The main executable and DLL" Level="1">
         <ComponentGroupRef Id="MainProgram" />
         <ComponentRef Id="ExeProgramsMenuShortcut"/>
@@ -53,11 +55,11 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id ="FireGiant" Name="Fire Giant">
-          <Directory Id="INSTALLFOLDER" Name="Tutorial 2.0" />
+          <Directory Id="INSTALLFOLDER" Name="Tutorial 3.2" />
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder" Name="Programs">
-        <Directory Id="MyAppProgramMenuFolder" Name="Fire Giant Tutorial 2.0"/>
+        <Directory Id="MyAppProgramMenuFolder" Name="Fire Giant Tutorial 3.2"/>
       </Directory>
       <Directory Id="DesktopFolder" Name="Desktop"/>
     </Directory>

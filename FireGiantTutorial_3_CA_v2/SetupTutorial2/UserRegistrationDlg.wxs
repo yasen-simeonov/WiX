@@ -14,8 +14,10 @@
         </Control>
         <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="&amp;Next">
           <Publish Event="ValidateProductID" Value="0">1</Publish>
-          <Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg">CostingComplete = 1</Publish>
-          <Publish Event="NewDialog" Value="SetupTypeDlg">ProductID</Publish>
+          <Publish Event="DoAction" Value="CheckPID">1</Publish>
+          <Publish Event="SpawnDialog" Value="InvalidPidDlg">PIDACCEPTED = "0"</Publish>
+          <!--<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg">CostingComplete = 1</Publish>-->
+          <Publish Event="NewDialog" Value="SetupTypeDlg">ProductID AND PIDACCEPTED = "1"</Publish>
         </Control>
         <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="Cancel">
           <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
