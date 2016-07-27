@@ -13,7 +13,7 @@
 
     <Binary Id="CustomActionBinary" SourceFile="$(var.CSharpCustomActionProject.TargetDir)$(var.CSharpCustomActionProject.TargetName).CA.dll" />
 
-    <CustomAction Id="CustomActionId" BinaryKey="CustomActionBinary" DllEntry="MyCustomActionMethod" Execute="deferred" HideTarget="yes" />
+    <CustomAction Id="CustomActionId" BinaryKey="CustomActionBinary" DllEntry="MyCustomActionMethod" Execute="immediate" HideTarget="yes" />
 
     <InstallExecuteSequence>
       <Custom Action="CustomActionId" Before="InstallFinalize" />

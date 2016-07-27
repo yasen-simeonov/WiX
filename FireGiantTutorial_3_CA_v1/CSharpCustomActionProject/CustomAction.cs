@@ -13,7 +13,8 @@ namespace CSharpCustomActionProject
         {
             session.Log("Executing MyCustomAction");
 
-            File.CreateText(@"C:\TEMP\Installed.txt");
+            string text = session["INSTALLFOLDER"].ToString();
+            File.WriteAllText(@"C:\TEMP\Installed.txt", text);
 
             return ActionResult.Success;
         }
