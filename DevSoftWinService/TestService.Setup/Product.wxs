@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define DevSoftWinService_TargetDir=$(var.DevSoftWinService.TargetDir)?>
+  <Product Id="61FFB6BE-686E-47EA-AF15-03D6A13D4D2C" Name="Test Service" Language="1033" Version="1.0.0.0" Manufacturer="Yasen Test" UpgradeCode="5a29b7ef-ce3b-4b47-bcff-166a65720b13">
+    <Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="Main Application" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+
+    <CustomAction Id="StartWinService" Directory="INSTALLFOLDER" ExeCommand='[SystemFolder]cmd.exe /c &quot;sc start TestService&quot;' Execute="deferred" Return="ignore" />
+
+    <InstallExecuteSequence>
+      <Custom Action="StartWinService" Before="InstallFinalize">NOT Installed</Custom>
+    </InstallExecuteSequence>
+    
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ROOTDIRECTORY" Name="Yasen Solutions">
+          <Directory Id="INSTALLFOLDER" Name="Test Service" />
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="ServiceComponent" Guid="6f63d6c5-cc9d-4bd5-a98a-16a374752bc1">
+        <File Id="DevSoftWinService.exe" Name="DevSoftWinService.exe" Source="$(var.DevSoftWinService_TargetDir)DevSoftWinService.exe" KeyPath="yes" />
+        <File Id="DevSoftWinService.exe.config" Name="DevSoftWinService.exe.config" Source="$(var.DevSoftWinService_TargetDir)DevSoftWinService.exe.config" KeyPath="no"/>
+        <ServiceInstall Id="ServiceInstaller" Type="ownProcess" Name="TestService" DisplayName="Test Service" 
+          Description="A test service that logs dummy text on an interval to a text file" Start="auto" ErrorControl="normal" />
+        <ServiceControl Id="StartService" Stop="both" Remove="uninstall" Name="TestService" Wait="yes" />                                
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
