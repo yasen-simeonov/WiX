@@ -11,7 +11,7 @@
       <ComponentGroupRef Id="ProductComponents" />
     </Feature>
 
-    <CustomAction Id="StartWinService" Directory="INSTALLFOLDER" ExeCommand='[SystemFolder]cmd.exe /c &quot;sc start TestService&quot;' Execute="deferred" Return="ignore" />
+    <CustomAction Id="StartWinService" Directory="INSTALLFOLDER" Impersonate="no" ExeCommand='[SystemFolder]cmd.exe /c &quot;net start TestService&quot;' Execute="deferred" Return="ignore" />
 
     <InstallExecuteSequence>
       <Custom Action="StartWinService" Before="InstallFinalize">NOT Installed</Custom>
